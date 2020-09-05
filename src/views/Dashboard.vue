@@ -1,4 +1,5 @@
 <template>
+<div>
 <div class="col-12">
     <div class="row">
         <template v-for="item in list"><!--- Egehana sor neden kırmızı? --->
@@ -6,10 +7,12 @@
         </template>
     </div>
 </div>
+</div>
 </template>
 
 <script>
 import Card from '@/components/card.vue'
+import Navbar from '@/components/navbar.vue'
 
 export default {
     name: 'Dashboard',
@@ -23,7 +26,7 @@ export default {
     },
 
     components: {
-        Card
+        Card,
     },
 
     methods:{
