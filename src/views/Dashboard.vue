@@ -1,8 +1,8 @@
 <template>
 <div class="col-12">
     <div class="row">
-        <template v-for="item in message"><!--- Egehana sor neden kırmızı? --->
-            <Card v-bind:title="item.title" v-bind:body= "item.body"/>
+        <template v-for="item in list"><!--- Egehana sor neden kırmızı? --->
+            <Card v-bind:title= "item.title" v-bind:body= "item.body" v-bind:url= "item.url"/>
         </template>
     </div>
 </div>
@@ -16,7 +16,8 @@ export default {
         data() {
             return {
                 message: [],
-                photos: []
+                photos: [],
+                list: [],
 
         }
     },
@@ -39,15 +40,27 @@ export default {
             method: 'GET'
             })
             .then(response => response.json())
-            .then(json => this.photos = json)
+            .then(json => this.photos = json);
+        },
+
+        MergeTwoAPI(){
+            this.list = Object.assign({}, this.message);
+            for(var i=0;i<30;i++){
+                this.list[i]["url"] = this.photos[i]["download_url"] 
+            }
         }
     },
 
     created(){
-        this.fetchSomeData()
-        this.fetchSomePhoto()
+        this.fetchSomeData();
+        this.fetchSomePhoto();
+
+    },
+    watch:{
+        photos(){
+            this.MergeTwoAPI();
+        }
     }
-    
 }
 </script>
 
