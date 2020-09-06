@@ -7,6 +7,7 @@
             v-bind:name="item.name"
             v-bind:email="item.email"
             v-bind:body="item.body"
+            v-bind:key="item.id"
           />
         </template>
       </div>
