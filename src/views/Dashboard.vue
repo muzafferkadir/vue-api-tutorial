@@ -2,8 +2,8 @@
   <div>
     <div class="col-12">
       <div class="row">
-        <template v-for="item in list"
-          ><Card
+        <template v-for="item in list">
+          <Card
             v-bind:title="item.title"
             v-bind:body="item.body"
             v-bind:url="item.url"
@@ -11,6 +11,17 @@
           />
         </template>
       </div>
+    </div>
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-secondary active" v-if="currentPage != 0">
+        <input type="radio" @click="UpdateList(-1)" checked> Önceki
+      </label>
+      <label class="btn btn-secondary">
+        <input type="radio"> {{allPages}} tane sayfadan {{currentPage+1}}.sayfa
+      </label>
+      <label class="btn btn-secondary" v-if="currentPage != allPages-1" >
+        <input type="radio" @click="UpdateList(1)"> Sonraki
+      </label>
     </div>
   </div>
 </template>
@@ -26,6 +37,12 @@ export default {
       message: [],
       photos: [],
       list: [],
+      invisibleList: [],
+
+      //pagination
+      currentPage: 0,
+      pageSize: 8,
+      allPages:0,
     };
   },
 
@@ -55,7 +72,21 @@ export default {
       for (var i = 0; i < 30; i++) {
         this.list[i]["url"] = this.photos[i]["download_url"];
       }
+      this.invisibleList=Object.assign({}, this.list);
+      this.UpdateList(0);
     },
+
+    UpdateList(index) {
+      this.list=[];
+      this.allPages=Math.floor(this.message.length/this.pageSize);
+      if(this.currentPage < this.allPages && this.currentPage >= 0){
+        this.currentPage = this.currentPage + index;
+      }
+      for (var i = 0; i < this.pageSize; i++ ) {
+        this.list[i] = this.invisibleList[this.pageSize*this.currentPage+i]; 
+      }
+    },
+    
   },
 
   created() {
@@ -70,4 +101,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.btn-group{
+  margin-bottom: 25px;
+}
+</style>
